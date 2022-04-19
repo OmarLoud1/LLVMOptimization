@@ -1,0 +1,34 @@
+omar@Omars-MacBook-Air-2 CSDS337 % lldb toy
+(lldb) target create "toy"
+
+Current executable set to '/Users/omar/337/CSDS337/toy' (arm64).
+(lldb) 
+Current executable set to '/Users/omar/337/CSDS337/toy' (arm64).
+(lldb) b example_pass.cpp:25
+Breakpoint 1: where = toy`ExamplePass(ModuleAST*) + 184 at example_pass.cpp:25:27, address = 0x0000000100001f90
+(lldb) process launch -i test.txt
+Process 19418 launched: '/Users/omar/337/CSDS337/toy' (arm64)
+ready> Process 19418 stopped
+* thread #1, queue = 'com.apple.main-thread', stop reason = breakpoint 1.1
+    frame #0: 0x0000000100001f90 toy`ExamplePass(TheModule=0x0000600000c13b70) at example_pass.cpp:25:27
+   22  
+   23       //if(typeid(exp)== typeid(forloop)){
+   24       if(forExpr) {
+-> 25         exp = (ForExprAST*) exp;
+   26         forloop = (ForExprAST*) exp;
+   27         ExprAST* body1 = forloop->Body.get();
+   28         fprintf(stderr, "something %p \n", body1);
+Target 1: (toy) stopped.
+Target 1: (toy) stopped.
+(lldb) p forExpr->Start
+(std::unique_ptr<ExprAST, std::default_delete<ExprAST> >) $0 = ExprAST @ 0x0000600000004090 {
+  __value_ = 0x0000600000004090
+}
+(lldb) p forExpr->Start.get()
+(NumberExprAST *) $1 = 0x0000600000004090
+(lldb) 
+(lldb) p forExpr->Start.get()
+(NumberExprAST *) $1 = 0x0000600000004090
+(lldb) p forExpr->End.get()
+(BinaryExprAST *) $2 = 0x0000600000208280
+(lldb) p forExpr->End.get()

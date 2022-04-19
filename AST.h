@@ -13,7 +13,7 @@ using namespace llvm;
 // Abstract Syntax Tree (aka Parse Tree)
 //===----------------------------------------------------------------------===//
 
-namespace {
+//namespace {
 
 /// ExprAST - Base class for all expression nodes.
 class ExprAST {
@@ -189,6 +189,6 @@ public:
   void addFunction(std::unique_ptr<FunctionAST> Function, bool isDefinition);
 };
 
-} // end anonymous namespace
+//} // end anonymous namespace
 
 #endif /* AST_H */

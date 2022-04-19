@@ -1,4 +1,7 @@
-extern putchard(char);
+
 def printstar(n)
-  for i = 1, i < n, 1.0 in
-    putchard(42);  # ascii 42 = '*'
+(for i = 1, i < 2, 1.0 in
+    1 + 2):
+(for i = 1, i < 3, 1.0 in
+    1 + 5);
+    
