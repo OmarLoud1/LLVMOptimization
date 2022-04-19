@@ -14,7 +14,7 @@ void ExamplePass(ModuleAST* TheModule) {
     FunctionAST* func = x.second.first.get();
     ForExprAST* forloop;
     ExprAST* exp = func->Body.get();
-
+    //print(exp);
     ForExprAST* forExpr = dynamic_cast<ForExprAST*>(exp);
 
     //if(typeid(exp)== typeid(forloop)){
@@ -22,8 +22,15 @@ void ExamplePass(ModuleAST* TheModule) {
       exp = (ForExprAST*) exp;
       forloop = (ForExprAST*) exp;
       ExprAST* body1 = forloop->Body.get();
-      fprintf(stderr, "FOR LOOP FOUND");
+      fprintf(stderr, "something %p \n", body1);
+      
+      fprintf(stderr, " %s \n", forloop->Start.get()->codegen()->getNameOrAsOperand().c_str() );
+      fprintf(stderr, " %s \n", forloop->End.get()->codegen()->getNameOrAsOperand().c_str() );
+
+
     }
+    
+
 
     //fprintf (stderr, "%s %s  \n", func, exp);
     //fprintf (stderr, "%d  \n", TheModule->getFunctionProto(x.first.c_str())->isOperator());
