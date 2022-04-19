@@ -81,12 +81,16 @@ void ExamplePass(ModuleAST* TheModule) {
      }  
      if(same){
 
+      BinaryExprAST* bodyexp = dynamic_cast<BinaryExprAST*>(func->Body.get()); 
+      bodyexp->LHS
+      bodyexp->RHS = valueright->Body.get();
        // new binary expression op colon RHS body1 LHS body 2
        // forloop1 replace body 
        // completely remove forloop 2
        // draw a syntax treee
 
        printf("helloworld");
+  
      }
     }
     
