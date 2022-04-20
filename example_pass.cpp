@@ -81,16 +81,67 @@ void ExamplePass(ModuleAST* TheModule) {
      }  
      if(same){
 
-      BinaryExprAST* bodyexp = dynamic_cast<BinaryExprAST*>(func->Body.get()); 
-      bodyexp->LHS
-      bodyexp->RHS = valueright->Body.get();
+      printf("The for loops are the same");
+
+      std::unique_ptr<BinaryExprAST> newExpression = std::make_unique<BinaryExprAST>(':', nullptr, nullptr );
+
+      ExprAST* newL = valueleft->Body.get();
+
+
+
+      //newExpression->LHS.release();
+
+      // newExpression->LHS.reset(newL);
+      newExpression->RHS.swap(valueright->Body);
+
+
+
+
+
+      // BinaryExprAST* body = new BinaryExprAST(':');
+     // BinaryExprAST* leftloop = dynamic_cast<BinaryExprAST*>(valueleft->Body.get());
+
+      //saved twice so we don't lose the body
+      // BinaryExprAST* leftloop1 = dynamic_cast<BinaryExprAST*>(valueleft->Body.get());
+      // BinaryExprAST* rightloop = dynamic_cast<BinaryExprAST*>(valueright->Body.get());
+
+      // leftloop->LHS.swap(leftloop1);;
+      // leftloop->RHS.swap(rightloop);
+
+      // std::unique_ptr<> newExpression;
+      // newExpression =  std::make_unique<BinaryExprAST>(':', leftloop1,rightloopalueright->Body.get() );
+
+      //  BinaryExprAST* newExpression;
+      //  newExpression = BinaryExprAST(':', leftloop1, rightloop);
+
+      // BinaryExprAST bodyexp(); 
+      // bodyexp().LHS.reset(valueleft->Body.get());
+      // bodyexp.reset(valueleft)
+      // bodyexp->RHS = valueright->Body.get();
+      NumberExprAST* fbvalueright = dynamic_cast<NumberExprAST*>(valueright->Body.get());
+      NumberExprAST* fbvalueleft = dynamic_cast<NumberExprAST*>(valueleft->Body.get());
+
+
+      // std::vector<double> fbodies;
+      // fbodies.push_back(fbvalueright->Val);
+      // fbodies.push_back(fbvalueleft->Val);
+      
+      //unique_ptr<ExprAST> newExpression = std::make_unique<ExprAST>();
+      //valueright->Body.swap(newExpression);
+
+      // bodyexp->LHS.reset(fbvalueleft);
+      // bodyexp->RHS.reset(fbvalueright);
+
+
        // new binary expression op colon RHS body1 LHS body 2
        // forloop1 replace body 
        // completely remove forloop 2
        // draw a syntax treee
-
-       printf("helloworld");
+      
   
+     }
+     else{
+       printf("the loops are not the same");
      }
     }
     
