@@ -66,6 +66,10 @@ public:
                 std::unique_ptr<ExprAST> RHS)
       : Op(Op), LHS(std::move(LHS)), RHS(std::move(RHS)) {}
 
+  BinaryExprAST(char Op, std::unique_ptr<ExprAST>::pointer LHS,
+                std::unique_ptr<ExprAST>::pointer RHS)
+      : Op(Op), LHS(std::move(LHS)), RHS(std::move(RHS)) {}
+
   Value *codegen() override;
 };
 

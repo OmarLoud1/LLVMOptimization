@@ -1,7 +1,6 @@
 
 def printstar(n)
-(for i = 1, i < 2, 1.0 in
+(for i = 1, i < 3, 3.0 in
     1 + 2):
-(for i = 1, i < 3, 1.0 in
+(for i = 1, i < 3, 3.0 in
     1 + 5);
-    
