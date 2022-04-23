@@ -51,6 +51,12 @@ void ExamplePass(ModuleAST* TheModule) {
     ForExprAST* valueright = dynamic_cast<ForExprAST*>(exp->RHS.get());
     ForExprAST* valueleft = dynamic_cast<ForExprAST*>(exp->LHS.get());
 
+    BinaryExprAST* binaryright = dynamic_cast<BinaryExprAST*>(exp->RHS.get());
+
+    if(binaryright) {
+      valueright = dynamic_cast<ForExprAST*>(binaryright->LHS.get());
+    }
+
     std::vector<double> headerfor1 = findloopheader(valueleft);
     std::vector<double> headerfor2 = findloopheader(valueright);
 
@@ -76,6 +82,12 @@ void ExamplePass(ModuleAST* TheModule) {
       valueleft->Body.reset(newExpression);
 
       func->Body.swap(exp->LHS);
+
+      if(binaryright) {
+        binaryright->LHS.swap(func->Body);
+        func->Body.swap(exp->RHS);
+      }
+
 
        // new binary expression op colon RHS body1 LHS body 2
        // forloop1 replace body 
