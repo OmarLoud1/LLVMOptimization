@@ -1,6 +1,5 @@
-# Kaleidoscope Passes
-This repository extends chapter 8 of LLVM's Kaleidoscope tutorial to allow easy implementation of optimization passes.  
-LLVM Kaleidoscope tutorial: https://llvm.org/docs/tutorial/
+# Group 2 Project: 
+Team Members: Omar Loudghiri - Oliver Traben - Sanhita Kumari - Micheal Fitzgerald
 
 ## Requirements
 `clang 12/13`    
