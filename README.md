@@ -1,4 +1,4 @@
-# Group 2 Project: 
+# Optimization of Compiler 
 Team Members: Omar Loudghiri - Oliver Traben - Sanhita Kumari - Micheal Fitzgerald
 
 ## Requirements
