@@ -1,77 +1,133 @@
-# Optimization of Compiler 
-Team Members: Omar Loudghiri - Oliver Traben - Sanhita Kumari - Micheal Fitzgerald
+# Optimization of Compiler
+
+## Overview
+
+This project focuses on optimizing a compiler using LLVM-based tools. It implements various compiler passes and demonstrates how to parse and manipulate Abstract Syntax Trees (AST) to generate optimized object code. The project includes a modified version of the Kaleidoscope language and allows the user to compile, parse, and execute C++ code with LLVM backend support.
 
 ## Requirements
-`clang 12/13`    
-`llvm 12/13`
 
-## Compile toy.cpp
-`AST.h` contains the class definitions for the abstract syntax tree (AST).  
-`toy.cpp` contains the modified Kaleidoscope ch. 8 source code.  
+To build and run the project, ensure you have the following tools installed:
+
+- **clang 12/13**  
+- **llvm 12/13**
+
+### Installation:
+To ensure LLVM is properly installed, run the following command:
+
+```bash
+$ llvm-config --version
 ```
+
+This will confirm if the right version of LLVM is set up.
+
+## Compile `toy.cpp`
+
+`AST.h` contains class definitions for the **Abstract Syntax Tree (AST)** used by the project. `toy.cpp` includes the modified Kaleidoscope chapter 8 source code.
+
+### To compile `toy.cpp`:
+
+```bash
 $ clang++ -g -O3 toy.cpp `llvm-config --cxxflags --ldflags --system-libs --libs all` -o toy
 ```
 
-## Parse with toy
-Suppose `file` contains Kaleidoscope code.
-```
+This command compiles the `toy.cpp` file with LLVM optimizations enabled.
+
+## Parse with `toy`
+
+To parse Kaleidoscope code in a file (`file`), you can pipe the file contents into `toy`:
+
+```bash
 $ cat file | ./toy
 ```
-This will pipe the contents of `file` into `toy` to be parsed.  
-The .o object file will be written to `output.o`
 
-### parse.sh
-For convenience, `parse.sh` will automatically parse multiple Kaleidoscope inputs.  
-Usage:
-```
+This will:
+1. Parse the Kaleidoscope code from `file`.
+2. Output the corresponding object file (`output.o`).
+
+### `parse.sh`
+
+For convenience, the `parse.sh` script parses multiple Kaleidoscope input files. You can use it like this:
+
+```bash
 $ sh parse.sh file1 [file2 ...]
 ```
-The script will automatically rename the output .o files to `file1.o file2.o ...`  
-To use these with main.cpp, you must include `file#.o` when compiling main.
+
+This will automatically:
+- Parse the input files.
+- Rename the output object files to `file1.o`, `file2.o`, etc.
+
+To use these object files with `main.cpp`, include the object files when compiling `main.cpp`.
 
 ## Compiling with Object Code
-Suppose `main.cpp` contains C++ code that uses functions defined in `output.o`  
-```
+
+If you have a `main.cpp` that uses functions defined in `output.o`, compile it as follows:
+
+```bash
 $ clang++ main.cpp output.o -o main
 ```
 
-## Running the code
-```
+This will link the object code (`output.o`) with your `main.cpp`.
+
+## Running the Code
+
+After compiling `main.cpp`, run the executable:
+
+```bash
 $ ./main
 ```
 
-## Using Object Code
-Suppose we define a Kaleidoscope function `foo(a1, a2, ..., an)` in `file` which is parsed and encoded in `output.o`.  
-Now we want to use it in `main.cpp`.  
-We must add the following to `main.cpp`:  
-```
+## Using Object Code in `main.cpp`
+
+To use a Kaleidoscope function `foo(a1, a2, ..., an)` from `file` (which is parsed into `output.o`) in `main.cpp`, you must declare the function with an `extern "C"` block:
+
+```cpp
 extern "C" {
     double foo(double, double, ..., double);
 }
 ```
-where `double` is repeated n times.  
-Now we can call `foo(-1, 3, ..., 93)`, for example.
-We can delcare as many functions inside the extern as we need.
 
-## Example
-`ops_test.txt` contains Kaleidoscope functions that test the `==, !=, <, >, <=, >=, !,` and `-` operators.  
-`ops_test.cpp` contains C++ code to run the functions in `ops_test.txt`.  
-(1) ``$ clang++ -g -O3 toy.cpp `llvm-config --cxxflags --ldflags --system-libs --libs all` -o toy``  
-(2) `$ cat ops_test.txt | ./toy`  
-(3) `$ clang++ ops_test.cpp output.o -o ops_test`  
-OR  
-(2) `$ sh parse.sh ops_test.txt`  
-(3) `$ clang++ ops_test.cpp ops_test.o -o ops_test`  
-(4) `$ ./ops_test`  
+Here, `double` is repeated `n` times. After this declaration, you can call `foo` from `main.cpp` as follows:
+
+```cpp
+foo(-1, 3, ..., 93);
+```
+
+You can define as many functions as needed in the `extern "C"` block.
+
+## Example Usage
+
+### Example Files:
+- `ops_test.txt` contains Kaleidoscope functions that test operators like `==`, `!=`, `<`, `>`, `<=`, `>=`, `!`, and `-`.  
+- `ops_test.cpp` contains C++ code to run the functions in `ops_test.txt`.
+
+### Steps:
+
+1. Compile `toy.cpp`:
+    ```bash
+    $ clang++ -g -O3 toy.cpp `llvm-config --cxxflags --ldflags --system-libs --libs all` -o toy
+    ```
+
+2. Parse the input file:
+    ```bash
+    $ cat ops_test.txt | ./toy
+    ```
+    Or, use the script:
+    ```bash
+    $ sh parse.sh ops_test.txt
+    ```
+
+3. Compile the `ops_test.cpp` with the output object file:
+    ```bash
+    $ clang++ ops_test.cpp output.o -o ops_test
+    ```
+
+4. Run the program:
+    ```bash
+    $ ./ops_test
+    ```
+
 Manually verify that the operation results are correct.
 
 ## Implementing Passes
-In `toy.cpp`, there is a function called `MainLoop()`. This function parses `stdin` and produces an AST. This AST is stored in a global `ModuleAST` variable called `TheModuleAST`. The `ModuleAST` contains all externs and functions defined in the parsed input. Implement passes by traversing and modifying the AST.  
-When your pass is complete, call `TheModuleAST->codegen()` to generate LLVM assembly code. The code will automatically print to the terminal.  
-Finally, call `GenObjectCode()` to write the LLVM assembly code to `output.o` as object code.
 
-## Example Pass Implementation
-In `example_pass.cpp`, we include `AST.h` so that we have the entire structure of the AST. Then we define a function `ExamplePass()` that takes a `ModuleAST*` as an argument. We implement our pass in `ExamplePass()`.  
-Now we have a pass defined, we need to use it. In `toy.cpp`, we add `#include "example_pass.cpp"` next to the other `#include` statements. This lets us call `ExamplePass()`. In main, we call `ExamplePass(TheModuleAST.get());` between `MainLoop()` and `TheModuleAST->codegen()`. This implements the pass as described above.  
-This is one way to implement a pass. Feel free to mess with the code as much as you want to design a different implementation.  
-Now we can compile and run the parser like normal.
+In `toy.cpp`, there is a function called `MainLoop()`. This function parses `stdin` and produces an AST. This AST is stored in a global `ModuleAST` variable called `TheModuleAST`. The `ModuleAST` contains all extern
